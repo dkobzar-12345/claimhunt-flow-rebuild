@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<title>Growth Audit — ClaimHunt</title>
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: only light;
+  /* ---- ClaimHunt, extracted from their live screens ---- */
+  --ch-bg:#FFFDF8; --ch-white:#FFFFFF; --ch-card:#FFFFFF;
+  --ch-green:#378560; --ch-green-dk:#2C6E4E; --ch-mint:#DCF5D9; --ch-bar:#4FAE32; --ch-bar-line:#DCEFD9;
+  --ch-hl:#FCECAE; --ch-or:#F3B03D; --ch-gold1:#F8D548; --ch-gold2:#F4B63F;
+  --ch-ink:#262626; --ch-txt:#4A4A48; --ch-muted:#ADACAB; --ch-qbar:#B1B1B1;
+  --ch-line:#B9B9B9; --ch-dis:#F3F3F3; --ch-dis-ink:#BDBDBD; --ch-seg:#EBEBEB;
+  --r-ctl:20px; --r-media:22px;
+  /* ---- the report shell, in ClaimHunt's own palette ---- */
+  --bg:#FFFDF8; --bg2:#FFFFFF; --surf:#FFFFFF;
+  --hair:rgba(38,38,38,.09); --hair2:rgba(38,38,38,.16);
+  --ink:#262626; --ink2:#4A4A48; --ink3:#8C8B88;
+  --accent:#378560; --accent-lift:#2C6E4E;
+  --panel:#FFFFFF; --panel-ink:#1A1A1A; --panel-muted:#66645F; --panel-line:#ECEAE4;
+  --accent-ink:#256244;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+@media(max-width:700px){.wrap{padding:0 20px}}
+
+/* ============ top bar ============ */
+.nav{position:sticky;top:0;z-index:70;background:rgba(255,253,248,.86);backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--hair)}
+.nav-in{max-width:1080px;margin:0 auto;padding:0 32px;height:58px;display:flex;align-items:center;gap:18px}
+@media(max-width:700px){.nav-in{padding:0 16px;gap:12px}}
+.nav-brand{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.nav-brand img{width:26px;height:26px;flex:none;display:block;border-radius:7px}
+.nav-brand span{color:var(--ink2);font-weight:500}
+.nav-brand b{color:var(--ink);font-weight:600}
+.nav-links{margin-left:auto;display:flex;gap:2px;align-items:center}
+.nav-links button{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink3);transition:.16s}
+.nav-links button:hover{color:var(--ink)}
+.nav-links button.on{color:var(--ink);background:#fff;box-shadow:0 1px 4px rgba(38,38,38,.08)}
+@media(max-width:640px){.nav-brand span{display:none}}
+
+.view{display:none}
+.view.on{display:block}
+
+/* ============ hero ============ */
+.hero{padding:104px 0 0;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-340px;left:50%;transform:translateX(-50%);
+  width:1100px;height:640px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(55,133,96,.16),transparent 72%)}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(40% 50% at 8% 20%,rgba(252,236,174,.55),transparent 70%),
+   radial-gradient(38% 45% at 92% 18%,rgba(243,176,61,.16),transparent 70%)}
+.hero>*{position:relative;z-index:1}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-lift);margin-bottom:26px}
+.hero h1{font-size:76px;line-height:.98;font-weight:700;letter-spacing:-.045em;margin:0 0 24px}
+@media(max-width:820px){.hero h1{font-size:50px}.hero{padding-top:70px}}
+.hero .lede{font-size:20px;line-height:1.5;font-weight:400;color:var(--ink2);max-width:600px;margin:0 auto;letter-spacing:-.012em}
+@media(max-width:820px){.hero .lede{font-size:17px}}
+.hero .meta{margin-top:30px;font-size:12.5px;color:var(--ink3);letter-spacing:.02em}
+.hero .meta b{color:var(--ink2);font-weight:600}
+
+.stats{display:flex;justify-content:center;gap:0;margin:70px auto 0;max-width:760px;
+  border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.stat{flex:1;padding:26px 14px;text-align:center;border-left:1px solid var(--hair)}
+.stat:first-child{border-left:none}
+.stat b{display:block;font-size:26px;font-weight:700;letter-spacing:-.03em;color:var(--ink)}
+.stat span{display:block;font-size:11.5px;color:var(--ink3);margin-top:5px;line-height:1.35}
+@media(max-width:700px){.stat b{font-size:19px}.stat{padding:18px 8px}}
+
+.fb{max-width:760px;margin:0 auto;padding:30px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:26px;text-align:left}
+@media(max-width:700px){.fb{grid-template-columns:1fr;gap:20px;padding-top:24px}}
+.fb-k{grid-column:1/-1;font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink3);text-align:center;margin-bottom:-6px}
+.fb-i{display:flex;gap:12px;align-items:flex-start}
+.fb-i .tick{width:18px;height:18px;flex:none;margin-top:3px;border-radius:50%;background:rgba(55,133,96,.16);
+  display:grid;place-items:center}
+.fb-i .tick svg{width:10px;height:10px;stroke:var(--accent-lift);stroke-width:3;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
+.fb-i p{font-size:14px;line-height:1.55;color:var(--ink2);margin:0}
+.fb-i p b{color:var(--ink);font-weight:700}
+
+.sec{padding:96px 0}
+.sec-k{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:18px}
+.sec h2{font-size:38px;line-height:1.14;font-weight:700;letter-spacing:-.035em;margin:0 0 20px;max-width:680px}
+@media(max-width:820px){.sec h2{font-size:29px}.sec{padding:64px 0}}
+.sec p.body{font-size:17px;line-height:1.66;color:var(--ink2);max-width:640px;margin:0 0 18px;letter-spacing:-.008em}
+.sec p.body b{color:var(--ink);font-weight:600}
+.rule{height:1px;background:var(--hair);margin:0}
+
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;max-width:820px}
+@media(max-width:760px){.notes{grid-template-columns:1fr}}
+.note{background:var(--surf);border:1px solid var(--hair);box-shadow:0 2px 10px rgba(38,38,38,.04);border-radius:16px;padding:24px 26px}
+.note h4{font-size:15px;font-weight:700;letter-spacing:-.015em;margin:0 0 8px}
+.note p{font-size:14px;line-height:1.6;color:var(--ink2);margin:0}
+
+.ideas{display:flex;flex-direction:column;gap:0;margin-top:14px;border-top:1px solid var(--hair)}
+.idea{display:grid;grid-template-columns:52px 1fr 180px;gap:26px;align-items:start;
+  padding:30px 4px;border-bottom:1px solid var(--hair);text-align:left;width:100%;transition:.18s}
+.idea:hover{background:rgba(255,255,255,.8)}
+@media(max-width:780px){.idea{grid-template-columns:38px 1fr;gap:16px}}
+.idea .no{font-size:13px;font-weight:700;color:var(--ink3);padding-top:4px;letter-spacing:.02em}
+.idea h3{font-size:21px;line-height:1.25;font-weight:700;letter-spacing:-.024em;margin:0 0 7px}
+@media(max-width:820px){.idea h3{font-size:18px}}
+.idea p{font-size:14.5px;line-height:1.6;color:var(--ink2);margin:0;max-width:540px}
+.idea .out{text-align:right;padding-top:3px}
+@media(max-width:780px){.idea .out{grid-column:2;text-align:left;padding-top:12px}}
+.idea .out b{display:block;font-size:19px;font-weight:700;letter-spacing:-.025em;color:var(--accent-lift);white-space:nowrap}
+.idea .out span{display:block;font-size:10.5px;color:var(--ink3);margin-top:3px;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.idea .seeit{display:inline-flex;align-items:center;gap:5px;margin-top:11px;font-size:12.5px;
+  font-weight:600;color:var(--accent-lift)}
+.idea .seeit svg{width:12px;height:12px}
+
+.band{background:var(--surf);border:1px solid var(--hair);border-radius:28px;box-shadow:0 2px 10px rgba(38,38,38,.04);padding:40px 44px;margin-top:44px;
+  display:flex;align-items:center;gap:36px;flex-wrap:wrap}
+@media(max-width:700px){.band{padding:28px 24px;gap:22px}}
+.band .lab{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+.band .txt{flex:1;min-width:240px}
+.band .txt p{font-size:15.5px;line-height:1.6;color:var(--ink2);margin:0}
+.band .nums{display:flex;gap:34px}
+.band .nums div b{display:block;font-size:30px;font-weight:700;letter-spacing:-.035em;color:var(--accent-lift)}
+.band .nums div span{display:block;font-size:11px;color:var(--ink3);margin-top:2px;letter-spacing:.04em;
+  text-transform:uppercase;font-weight:600}
+
+.cta-row{display:flex;justify-content:center;margin-top:52px;align-items:center;gap:22px;flex-wrap:wrap}
+.bigbtn{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;
+  font-size:15px;font-weight:700;letter-spacing:-.01em;padding:15px 26px;border-radius:30px;transition:.16s}
+.bigbtn:hover{filter:brightness(1.1)}
+.bigbtn svg{width:15px;height:15px}
+
+.foot{border-top:1px solid var(--hair);padding:36px 0 70px;font-size:12.5px;line-height:1.6;color:var(--ink3)}
+
+/* ============ prototype stage ============ */
+.stage{display:grid;grid-template-columns:minmax(440px,1fr) minmax(400px,470px);gap:0;
+  align-items:start;min-height:calc(100vh - 58px)}
+@media(max-width:1080px){.stage{grid-template-columns:1fr}}
+.phonecol{padding:34px 24px 46px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.panelcol{border-left:1px solid var(--hair);background:var(--panel);color:var(--panel-ink);
+  min-height:calc(100vh - 58px);position:sticky;top:58px;max-height:calc(100vh - 58px);overflow-y:auto}
+@media(max-width:1080px){.panelcol{position:static;max-height:none;border-left:none;border-top:1px solid var(--hair)}}
+
+.phone{position:relative;width:390px;height:844px;flex:none;background:#000;border:11px solid #000;
+  border-radius:46px;box-shadow:0 0 0 1.5px #DAD8D2,0 34px 70px -22px rgba(38,38,38,.35)}
+.phone-in{position:absolute;inset:0;border-radius:36px;overflow:hidden;background:var(--ch-bg);color-scheme:only light}
+.island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:104px;height:30px;background:#000;
+  border-radius:16px;z-index:60;pointer-events:none}
+.sbar{position:absolute;top:0;left:0;right:0;height:50px;z-index:55;pointer-events:none;display:flex;
+  align-items:center;justify-content:space-between;padding:14px 28px 0 34px;font:600 15px/1 -apple-system,'Inter',sans-serif;color:#111;transition:color .3s}
+.sbar.light{color:#fff}
+.sbar .glyphs{display:flex;gap:5px;align-items:center}
+.homebar{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:134px;height:5px;
+  border-radius:3px;background:#111;z-index:56;pointer-events:none;transition:background .3s}
+.homebar.light{background:rgba(255,255,255,.9)}
+.screenwrap{position:absolute;inset:0;overflow:hidden;background:var(--ch-bg)}
+
+/* ============ phone screens — ClaimHunt's system, all prefixed scr-/ch- ============ */
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--ch-bg);color:var(--ch-ink);
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter',sans-serif;
+  transform:translateX(100%);transition:transform .36s cubic-bezier(.32,.72,0,1);z-index:10;will-change:transform}
+.scr.is-active{transform:translateX(0);z-index:20}
+.scr.is-past{transform:translateX(-24%)}
+.scr.sheet{transform:translateY(100%)}
+.scr.sheet.is-active{transform:translateY(0);z-index:30}
+.scr.nofx{transition:none}
+.scr-top{flex:none;padding:58px 20px 0;position:relative;z-index:2}
+.scr-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 20px;scrollbar-width:none;position:relative;z-index:2}
+.scr-body::-webkit-scrollbar{display:none}
+.scr-body.dock{display:flex;flex-direction:column}
+.scr-foot{flex:none;padding:10px 20px 30px;position:relative;z-index:2}
+
+/* header: back arrow, three segment progress, Skip */
+.ch-nav{display:flex;align-items:center;gap:9px;height:36px}
+.ch-back{width:30px;height:30px;flex:none;display:grid;place-items:center;color:#9C9B98}
+.ch-back svg{width:22px;height:22px}
+.ch-back.ghost{visibility:hidden}
+.ch-segs{flex:1;display:flex;gap:9px}
+.ch-segs i{flex:1;height:9px;border-radius:5px;background:var(--ch-seg);overflow:hidden;position:relative}
+.ch-segs i b{position:absolute;left:0;top:0;bottom:0;background:var(--ch-green);border-radius:5px;transition:width .4s}
+.ch-skip{font-size:16px;font-weight:500;color:var(--ch-muted);padding-left:10px}
+
+/* their highlighter with selection handles */
+.ch-hl{background:var(--ch-hl);padding:0 3px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.ch-hl::before,.ch-hl::after{content:'';display:inline-block;width:12px;height:1.08em;vertical-align:-.2em;
+  background:linear-gradient(var(--ch-or),var(--ch-or)) center/3px 100% no-repeat}
+.ch-hl::before{margin:0 -3px 0 -9px;background:radial-gradient(circle at 6px 4px,var(--ch-or) 4.6px,transparent 5.2px) top/12px 9px no-repeat,
+  linear-gradient(var(--ch-or),var(--ch-or)) center/3px 100% no-repeat}
+.ch-hl::after{margin:0 -9px 0 -3px;background:radial-gradient(circle at 6px 5px,var(--ch-or) 4.6px,transparent 5.2px) bottom/12px 10px no-repeat,
+  linear-gradient(var(--ch-or),var(--ch-or)) center/3px 100% no-repeat}
+
+.ch-emoji{display:block;height:92px;width:auto;margin-top:58px}
+.ch-h1{font-size:39px;line-height:1.36;font-weight:400;letter-spacing:-.022em;margin:20px 0 0;color:var(--ch-ink)}
+.ch-hq{font-size:29px;line-height:1.36;font-weight:400;letter-spacing:-.018em;margin:34px 0 0;color:var(--ch-ink)}
+.ch-q{display:flex;gap:13px;margin-top:20px}
+.ch-q::before{content:'';width:4px;flex:none;border-radius:2px;background:var(--ch-qbar)}
+.ch-q p{font-size:17px;line-height:1.42;color:var(--ch-txt);letter-spacing:-.012em}
+
+.ch-btn{display:block;width:100%;height:62px;border-radius:20px;background:var(--ch-green);color:#fff;
+  font:600 21px/1 -apple-system,BlinkMacSystemFont,'Inter',sans-serif;letter-spacing:-.01em;transition:filter .15s,background .2s;
+  box-shadow:0 8px 16px -8px rgba(38,38,38,.45)}
+.ch-btn:hover{filter:brightness(1.05)}
+.ch-btn[disabled]{background:var(--ch-dis);color:var(--ch-dis-ink);box-shadow:none;cursor:default}
+.ch-btn2{display:block;width:100%;height:62px;border-radius:20px;background:#EDEDED;color:var(--ch-green);margin-bottom:12px;
+  font:600 21px/1 -apple-system,BlinkMacSystemFont,'Inter',sans-serif}
+.ch-prem{font-size:14px;color:var(--ch-muted);margin-top:16px;font-weight:500}
+.ch-promo{font-size:14px;color:var(--ch-muted);margin-top:16px;font-weight:500;text-align:right;letter-spacing:.02em}
+
+/* welcome (splash) */
+.scr--welcome{background:#fff}
+.ch-splash{display:flex;flex-direction:column;align-items:center;height:100%;padding-top:226px}
+.ch-splash img.ic{width:82px;height:82px;display:block}
+.ch-splash h2{font-size:33px;line-height:1.2;font-weight:700;letter-spacing:-.02em;text-align:center;margin-top:16px;color:var(--ch-ink)}
+.ch-splash img.laurel{width:296px;height:auto;margin-top:auto;margin-bottom:58px;display:block}
+
+/* rows — their logo-tile rows */
+.ch-rows{display:flex;flex-direction:column;gap:11px;margin-top:30px;padding-bottom:6px}
+.ch-row{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:var(--ch-white);border:1.5px solid var(--ch-line);
+  border-radius:var(--r-ctl);height:60px;padding:0 14px 0 9px;font:600 18px/1.2 -apple-system,'Inter',sans-serif;color:var(--ch-ink);transition:.14s}
+.ch-row img{width:40px;height:40px;border-radius:10px;flex:none;display:block}
+.ch-row .nm{flex:1}
+.ch-row.on{border:2px solid var(--ch-green);color:var(--ch-green)}
+.ch-ck{width:30px;height:30px;flex:none;border-radius:50%;background:var(--ch-green);display:grid;place-items:center;opacity:0;transform:scale(.6);transition:.16s}
+.ch-ck svg{width:15px;height:15px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ch-row.on .ch-ck{opacity:1;transform:none}
+
+/* brands grid — their app-icon tiles */
+.ch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 14px;margin-top:30px;padding:0 10px 10px}
+.ch-tile{display:flex;flex-direction:column;align-items:center;gap:6px;font:600 14.5px/1.15 -apple-system,'Inter',sans-serif;color:var(--ch-ink);text-align:center;position:relative}
+.ch-tile img{width:92px;height:92px;border-radius:22px;display:block;box-shadow:0 4px 12px rgba(120,100,60,.14);border:3px solid transparent;transition:.14s}
+.ch-tile.on img{border-color:var(--ch-green)}
+.ch-tile.on{color:var(--ch-green)}
+.ch-tile .ch-ck{position:absolute;top:-6px;right:2px;width:26px;height:26px;border:2px solid #fff}
+.ch-tile.on .ch-ck{opacity:1;transform:none}
+
+/* loader */
+.ch-load{display:flex;flex-direction:column;align-items:stretch;padding-top:118px}
+.ch-load img{width:96px;height:96px;margin:0 auto;display:block}
+.ch-load h2{font-size:25px;line-height:1.24;font-weight:700;letter-spacing:-.02em;text-align:center;margin:16px 0 30px;color:var(--ch-ink)}
+.ch-lb{margin-bottom:24px;opacity:.35;transition:opacity .3s}
+.ch-lb.on{opacity:1}
+.ch-lb .r{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;font-size:16px;line-height:1.3;color:var(--ch-ink);margin-bottom:9px}
+.ch-lb .r b{font-size:18px;font-weight:700;flex:none}
+.ch-track{height:18px;border-radius:9px;background:#fff;border:1.5px solid var(--ch-bar-line);padding:2.5px}
+.ch-track i{display:block;height:100%;width:0;border-radius:6px;background:var(--ch-bar);transition:width .15s linear}
+
+/* matches — payoff, built from their rows */
+.ch-mlist{display:flex;flex-direction:column;gap:9px;margin-top:22px;padding-bottom:8px}
+.ch-m{display:flex;align-items:center;gap:12px;background:var(--ch-white);border:1.5px solid var(--ch-line);border-radius:var(--r-ctl);padding:10px 12px 10px 9px}
+.ch-m img{width:40px;height:40px;border-radius:10px;flex:none}
+.ch-m div{flex:1;min-width:0}
+.ch-m b{display:block;font-size:16.5px;font-weight:600;color:var(--ch-ink);line-height:1.2}
+.ch-m div span{display:block;font-size:13px;color:var(--ch-txt);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-m b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-lockp{flex:none;display:flex;align-items:center;gap:4px;background:var(--ch-hl);border-radius:10px;padding:5px 8px;white-space:nowrap;font-size:12px;font-weight:600;color:#7A5A12}
+.ch-lockp svg{width:12px;height:12px;stroke:#7A5A12;stroke-width:2.4;fill:none}
+.ch-more{font-size:14px;color:var(--ch-muted);text-align:center;margin-top:4px}
+
+/* paywall — theirs */
+.ch-restore{position:absolute;right:20px;top:54px;z-index:3;height:38px;padding:0 15px;border-radius:12px;background:#F2F2F2;font:500 15px/38px -apple-system,'Inter',sans-serif;color:var(--ch-ink)}
+.ch-x{position:absolute;left:18px;top:56px;z-index:3;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#B9B8B5}
+.ch-x svg{width:18px;height:18px}
+.scr--pay .scr-top{padding-top:92px}
+.ch-payic{width:60px;height:60px;display:block;border-radius:16px;box-shadow:0 0 0 3px #ECEBE7}
+.ch-payh{font-size:28px;line-height:1.32;font-weight:400;letter-spacing:-.02em;margin:16px 0 0;color:var(--ch-ink)}
+.scr--pay .ch-q{margin-top:14px}
+.scr--pay .ch-q p{font-size:14.5px;line-height:1.38}
+.ch-proof{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;background:var(--ch-white);border:1.5px solid #EFEDE6;border-radius:16px;padding:7px 10px}
+.ch-proof .st{color:#F5B400;font-size:11px;letter-spacing:1px;line-height:1}
+.ch-proof b{font-size:15.5px;font-weight:700;color:var(--ch-ink)}
+.ch-proof small{display:block;font-size:10.5px;color:var(--ch-txt);margin-top:0;line-height:1.25}
+.ch-proof .sep{width:1px;align-self:stretch;background:#EFEDE6}
+.ch-proof .c{text-align:center;flex:1}
+.ch-rev{margin-top:10px;font-size:13px;line-height:1.4;color:var(--ch-txt);font-style:italic;padding:0 4px}
+.ch-rev span{font-style:normal;color:var(--ch-muted);font-size:12px;display:block;margin-top:3px}
+.ch-plans{display:flex;flex-direction:column;gap:12px;margin-top:20px;padding-bottom:4px}
+.ch-plan{position:relative;display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--ch-white);
+  border:2px solid var(--ch-mint);border-radius:20px;height:66px;padding:0 16px 0 20px;transition:.15s;color:var(--ch-ink)}
+.ch-plan.on{background:var(--ch-mint);border-color:var(--ch-green)}
+.ch-plan .t{flex:1;font-size:16px;letter-spacing:.01em;text-transform:uppercase;white-space:nowrap}
+.ch-plan .p{font-size:16px;line-height:1.2;text-align:left;width:106px;white-space:nowrap}
+.ch-plan .p small{display:block;font-size:12.5px;color:var(--ch-txt)}
+.ch-radio{width:26px;height:26px;flex:none;border-radius:50%;border:2px solid #B9B9B9;display:grid;place-items:center}
+.ch-plan.on .ch-radio{border-color:var(--ch-green)}
+.ch-radio i{width:14px;height:14px;border-radius:50%;background:var(--ch-green);opacity:0}
+.ch-plan.on .ch-radio i{opacity:1}
+.ch-save{position:absolute;top:-15px;right:34px;height:27px;padding:0 13px;border-radius:9px;background:linear-gradient(180deg,var(--ch-gold1),var(--ch-gold2));
+  font:700 14px/27px -apple-system,'Inter',sans-serif;color:#3B2A06;letter-spacing:.02em}
+.ch-legal{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:11.5px;color:var(--ch-muted);white-space:nowrap;gap:6px}
+.ch-legal span{display:flex;align-items:center;gap:3px;font-size:12px}
+.ch-legal svg{width:16px;height:16px}
+.ch-billing{font-size:12.5px;color:var(--ch-txt);text-align:center;margin:0 0 8px}
+
+/* offer on close */
+.scr--offer .scr-top{padding-top:92px}
+.ch-ocard{margin-top:22px;background:var(--ch-mint);border:2px solid var(--ch-green);border-radius:22px;padding:22px 20px 18px;position:relative}
+.ch-ocard .t{font-size:16px;letter-spacing:.02em;text-transform:uppercase;color:var(--ch-ink)}
+.ch-ocard .big{font-size:42px;font-weight:700;letter-spacing:-.03em;color:var(--ch-ink);margin-top:8px;line-height:1}
+.ch-ocard .big small{font-size:17px;font-weight:500;color:var(--ch-txt);letter-spacing:0}
+.ch-ocard .l{font-size:15px;color:var(--ch-txt);margin-top:8px;line-height:1.4}
+.ch-ocard .l s{color:var(--ch-muted)}
+.ch-ocard .ch-save{right:20px}
+.ch-ticks{display:flex;flex-direction:column;gap:9px;margin-top:20px;padding-bottom:6px}
+.ch-ticks div{display:flex;align-items:center;gap:10px;font-size:15.5px;color:var(--ch-ink)}
+.ch-ticks .ch-ck{opacity:1;transform:none;width:24px;height:24px}
+.ch-ticks .ch-ck svg{width:12px;height:12px}
+.ch-nothx{display:block;width:100%;height:40px;margin-top:6px;font:500 15px/1 -apple-system,'Inter',sans-serif;color:var(--ch-muted)}
+
+/* alerts — their notification primer */
+.ch-notif{display:block;width:100%;max-width:330px;height:auto;margin-top:58px}
+.ch-done{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14.5px;color:var(--ch-green);font-weight:600}
+.ch-done svg{width:18px;height:18px;stroke:var(--ch-green);stroke-width:2.6;fill:none}
+
+/* dark mode — an approximation: no dark frames were supplied */
+.phone-in.dark{--ch-bg:#121417;--ch-white:#1D2126;--ch-card:#1D2126;--ch-ink:#F3F3F1;--ch-txt:#B2B0AB;--ch-muted:#7E7C78;
+  --ch-line:#3A3E44;--ch-seg:#2A2E33;--ch-dis:#23272C;--ch-dis-ink:#5D6167;--ch-mint:#16362A;--ch-hl:#5B4A16;--ch-qbar:#4A4D52;--ch-bar-line:#2C4A2E;background:var(--ch-bg)}
+.phone-in.dark .screenwrap,.phone-in.dark .scr--welcome{background:var(--ch-bg)}
+.phone-in.dark .ch-track{background:#1D2126}
+.phone-in.dark .ch-restore{background:#24282D}
+.phone-in.dark .ch-btn2{background:#24282D;color:#7FC6A2}
+.phone-in.dark .ch-plan.on .t,.phone-in.dark .ch-ocard .t{color:var(--ch-ink)}
+.phone-in.dark .ch-plan:not(.on){border-color:#2A3A33}
+.phone-in.dark .ch-proof{border-color:#2D3136}
+.phone-in.dark .ch-proof .sep{background:#2D3136}
+.phone-in.dark .ch-lockp{color:#F6DF97}
+.phone-in.dark .ch-lockp svg{stroke:#F6DF97}
+.phone-in.dark .ch-row.on,.phone-in.dark .ch-tile.on{color:#7FC6A2}
+.phone-in.dark .ch-tile img{box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.phone-in.dark .laurel{filter:invert(1) hue-rotate(180deg)}
+
+/* prototype toolbar, walkthrough, QR */
+.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:520px}
+.seg{display:inline-flex;align-items:center;background:#fff;border:1px solid #E6E3DB;border-radius:20px;padding:3px;gap:2px}
+.seg button{padding:6px 11px;border-radius:16px;font:600 12px/1 'Inter',sans-serif;color:var(--ink2);transition:.14s}
+.seg button.on{background:var(--ink);color:#fff}
+.demo-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:20px;background:var(--accent);color:#fff;
+  font:700 12px/1 'Inter',sans-serif}
+.demo-cap{width:390px;max-width:calc(100vw - 24px);background:#fff;border:1px solid var(--hair);border-radius:16px;padding:14px 14px 12px;
+  display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(38,38,38,.07)}
+.demo-cap .bar{position:absolute;left:0;top:0;right:0;height:3px;background:#EEECE6}
+.demo-cap .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s linear}
+.demo-cap p{flex:1;font-size:13.5px;line-height:1.45;color:var(--ink);margin:0;font-weight:500}
+.demo-cap button{font:700 12px/1 'Inter',sans-serif;color:var(--ink2);padding:7px 10px;border-radius:12px;border:1px solid #E6E3DB;flex:none}
+.finger{position:absolute;z-index:90;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(38,38,38,.26);
+  border:2px solid rgba(255,255,255,.95);box-shadow:0 4px 14px rgba(0,0,0,.25);pointer-events:none;opacity:0;left:50%;top:60%;
+  transition:left .32s cubic-bezier(.4,0,.2,1),top .32s cubic-bezier(.4,0,.2,1),opacity .2s,transform .15s}
+.finger.show{opacity:1}
+.finger.press{transform:scale(.78);background:rgba(38,38,38,.4)}
+.qr{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--hair);border-radius:16px;padding:10px 16px 10px 10px;text-align:left}
+.qr img{width:135px;height:135px;display:block;image-rendering:pixelated;border-radius:6px}
+.qr span{font-size:12.5px;line-height:1.45;color:var(--ink2)}
+.qr b{display:block;color:var(--ink);font-size:13.5px}
+@media(max-width:1080px){.qr{display:none}}
+
+#view-proto .tools{order:0} #view-proto .demo-cap{order:1} #view-proto .phone{order:2} #view-proto .chips{order:3}
+#view-proto .chiphint{order:4} #view-proto .qr{order:5}
+.cta-row .qr{order:2}
+/* on a phone: the prototype is the screen */
+@media(max-width:500px){
+  #view-proto .phonecol{padding:0 0 28px;gap:14px}
+  #view-proto .phone{width:100vw;height:calc(100svh - 58px);min-height:640px;border:0;border-radius:0;box-shadow:none;order:1}
+  #view-proto .phone-in{border-radius:0}
+  #view-proto .island,#view-proto .sbar,#view-proto .homebar{display:none}
+  #view-proto .scr-top{padding-top:14px}
+  #view-proto .scr-foot{padding-bottom:18px}
+  #view-proto .scr--pay .scr-top{padding-top:58px}
+  #view-proto .scr--offer .scr-top{padding-top:52px}
+  #view-proto .ch-restore{top:10px}
+  #view-proto .ch-x{top:12px}
+  #view-proto .ch-splash{padding-top:170px}
+  #view-proto .ch-load{padding-top:70px}
+  #view-proto .ch-emoji{margin-top:30px}
+  #view-proto .tools{order:3;padding:0 12px}
+  #view-proto .demo-cap{position:fixed;left:12px;right:12px;bottom:12px;width:auto;max-width:none;z-index:95}
+  #view-proto .chips{order:4;padding:0 12px}
+  #view-proto .chiphint{order:5}
+}
+
+.herobtns{display:flex;justify-content:center;margin-top:30px}
+.ghostbtn{display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--hair2);color:var(--ink);font-size:14px;
+  font-weight:700;padding:9px 20px 9px 9px;border-radius:30px;box-shadow:0 2px 12px rgba(38,38,38,.06);transition:.16s}
+.ghostbtn:hover{box-shadow:0 4px 18px rgba(38,38,38,.1)}
+.ghostbtn .pl{width:30px;height:30px;border-radius:50%;background:var(--accent);display:grid;place-items:center}
+.ghostbtn .pl svg{width:12px;height:12px;fill:#fff;margin-left:2px}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:470px;margin:0 auto}
+.chip{padding:7px 13px;border-radius:20px;border:1px solid #E6E3DB;background:#fff;
+  font:600 12px/1 'Inter',sans-serif;color:var(--ink2);transition:.14s}
+.chip:hover{color:var(--ink);border-color:#CFCBC0}
+.chip.offer{border-style:dashed;border-color:var(--accent);color:var(--accent-lift)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;border-style:solid}
+.chiphint{text-align:center;font-size:11px;color:var(--ink3);margin:0;max-width:430px}
+
+/* ============ the short panel ============ */
+.pn{padding:30px 30px 60px}
+.pn-n{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+.pn-n.ctx{color:var(--panel-muted)}
+.pn-t{font-size:23px;line-height:1.18;font-weight:700;letter-spacing:-.028em;margin:8px 0 0;color:var(--panel-ink)}
+.pn-hyp{font-size:15px;line-height:1.62;color:#33322F;margin:16px 0 0}
+.pn-hyp b{font-weight:700;color:var(--panel-ink)}
+.pn-out{margin-top:22px;border-top:1px solid var(--panel-line);padding-top:18px}
+.pn-out .lab{font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--panel-muted)}
+.pn-out .v{font-size:31px;font-weight:700;letter-spacing:-.035em;color:var(--accent-ink);margin-top:7px;line-height:1}
+.pn-kept{margin-top:22px;font-size:12.5px;line-height:1.55;color:var(--panel-muted)}
+.pn-kept b{color:#33322F;font-weight:700}
+.pn-foot{font-size:11.5px;line-height:1.55;color:var(--panel-muted);border-top:1px solid var(--panel-line);
+  padding-top:14px;margin-top:26px}
+.pn-sep{height:1px;background:var(--panel-line);margin:26px 0}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-in">
+    <div class="nav-brand">
+      <img src="img/icon.png" alt="ClaimHunt">
+      <b>Growth Audit</b><span>· ClaimHunt</span>
+    </div>
+    <div class="nav-links">
+      <button class="on" data-view="over">Overview</button>
+      <button data-view="proto">Prototype</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= OVERVIEW ======================= -->
+<div class="view on" id="view-over">
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Growth Audit · October 2026</div>
+    <h1>ClaimHunt</h1>
+    <p class="lede">Five ideas to unlock more revenue from the traffic you already have.</p>
+    <div class="meta">Prepared by <b>Adapty</b> · based on your live iOS flow and your App Store listing</div>
+    <div class="herobtns"><button class="ghostbtn" data-demo><span class="pl"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></span>Watch the 30-second walkthrough</button></div>
+    <div class="stats">
+      <div class="stat"><b>30,000+</b><span>apps run subscriptions<br>on Adapty</span></div>
+      <div class="stat"><b>5</b><span>ideas, each rebuilt<br>as a working screen</span></div>
+      <div class="stat"><b>0</b><span>design changes<br>to your art direction</span></div>
+    </div>
+
+    <div class="fb">
+      <div class="fb-k">Built in Adapty Flow Builder</div>
+      <div class="fb-i">
+        <span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <p><b>Millions of dollars</b> in subscription revenue pass through Flow Builder every month.</p>
+      </div>
+      <div class="fb-i">
+        <span class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <p><b>Nearly 500 apps</b> actively build their paywalls and onboarding in it — plenty of them past $100K MRR.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="wrap">
+    <div class="sec-k">What this is</div>
+    <h2>We opened ClaimHunt the way a new user does, then rebuilt the parts we think are leaving money on the table.</h2>
+    <p class="body">Adapty powers subscriptions for <b>30,000+ apps</b>, so we get to see what actually moves conversion and ARPU across the market rather than inside one app. We pointed that at ClaimHunt: installed it, went through every screen up to the paywall, read your App Store listing, and looked for gaps between what you already have and what you currently show people.</p>
+    <p class="body">What follows is five ideas — not fifteen. Each one is a hypothesis you can A/B test, and each one is built into a clickable prototype so you can see it rather than imagine it. <b>The prototype uses your design, not ours.</b></p>
+
+    <div class="notes">
+      <div class="note">
+        <h4>We did not redesign your app</h4>
+        <p>Every screen in the prototype is yours — your highlighter headlines, your logo rows, your brand tiles, your loader bars, your plan cards and your green button. Only the order changed, plus a few things you already own but do not show at the right moment. This is not a design pitch.</p>
+      </div>
+      <div class="note">
+        <h4>You may have tested some of this</h4>
+        <p>We are working from the outside, so we cannot see your experiment history. If one of these is something you have already run, tell us — we will go deeper on the rest rather than repeat it.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rule"></div>
+
+<div class="sec">
+  <div class="wrap">
+    <div class="sec-k">The five ideas</div>
+    <h2>Ranked by what we would test first.</h2>
+    <p class="body">Each one links straight to the screen in the prototype.</p>
+
+    <div class="ideas">
+      <button class="idea" data-jump="matches">
+        <span class="no">01</span>
+        <span>
+          <h3>Show their brands before the price</h3>
+          <p>People tap through six questions — providers, online services, drinks, cars, stores, brands — and the loader says “Matching your purchases and settlements”. Then the paywall opens without naming a single thing they picked. One screen that reads their brands back closes that gap.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +10–20%</b><span>to purchase</span></span>
+      </button>
+
+      <button class="idea" data-jump="paywall">
+        <span class="no">02</span>
+        <span>
+          <h3>Name their brands in the paywall headline</h3>
+          <p>Your headline types out “get payout alerts matched to you”. Someone who picked Toyota and Poppi should read “get payout alerts for Toyota, Poppi and 3 more” — the same sentence, with their answers in it.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +15–20%</b><span>to purchase</span></span>
+      </button>
+
+      <button class="idea" data-jump="offer">
+        <span class="no">03</span>
+        <span>
+          <h3>Give the paywall a way out, and one offer behind it</h3>
+          <p>Today the paywall has no close button, only Restore. Add one, and let it open a single second chance on the $39.99 Annual Premium already in your store — $10 under the $49.99 yearly plan. No timer, no invented discount.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>ARPU +10–15%</b><span>second chance</span></span>
+      </button>
+
+      <button class="idea" data-jump="alerts">
+        <span class="no">04</span>
+        <span>
+          <h3>Ask for tracking and alerts after the paywall</h3>
+          <p>The tracking prompt covers your very first story screen, notifications come next, then “How did you hear about us?” — three asks before anyone has seen a claim. After purchase, “You won’t miss a payout day” is a promise they have just paid for.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +10–15%</b><span>to purchase</span></span>
+      </button>
+
+      <button class="idea" data-jump="paywall">
+        <span class="no">05</span>
+        <span>
+          <h3>Put your 4.8 and your reviews on the paywall</h3>
+          <p>Your 4.8 from 3.1K App Store ratings appears nowhere in the flow, and “1 Million+ happy users” is only on the splash. Money-back apps live on trust. Your rating, a real review and “no cut of your payout” belong next to the price.</p>
+          <span class="seeit">See the screen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </span>
+        <span class="out"><b>CR +10–15%</b><span>to purchase</span></span>
+      </button>
+    </div>
+
+    <div class="band">
+      <div class="txt">
+        <div class="lab">Potential outcome</div>
+        <p>Run together, these five move the same funnel at three points: what people see before the price, what the paywall says to them, and what happens when they say no.</p>
+      </div>
+      <div class="nums">
+        <div><b>+25%</b><span>CR to purchase</span></div>
+        <div><b>up to +30%</b><span>Revenue</span></div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <div class="qr"><img src="img/qr.svg" alt="QR code for the prototype"><span><b>Or open it on your phone</b>Scan to try the flow in your hand.</span></div>
+      <button class="bigbtn" data-view="proto">Open the prototype
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <div class="wrap">
+    Impact ranges are Adapty's expected effect from teardowns and A/B tests across subscription apps — not measured lift for ClaimHunt. Every price, rating, review and claim here and in the prototype comes from ClaimHunt's own App Store listing and in-app screens; prices are as listed on the US App Store.
+  </div>
+</div>
+</div><!-- /view-over -->
+
+<!-- ======================= PROTOTYPE ======================= -->
+<div class="view" id="view-proto">
+<div class="stage">
+  <div class="phonecol">
+    <div class="tools" id="tools">
+      <div class="seg" id="segTheme"><button data-theme="light" class="on">Light</button><button data-theme="dark">Dark</button></div>
+      <button class="demo-btn" id="demoBtn"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>30-sec walkthrough</button>
+    </div>
+    <div class="phone">
+      <div class="phone-in" id="phoneIn">
+        <div class="island"></div>
+        <div class="sbar" id="sbar">
+          <span>9:41</span>
+          <span class="glyphs">
+            <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.5" width="3" height="3.5" rx="1"/><rect x="4.5" y="5.5" width="3" height="5.5" rx="1"/><rect x="9" y="3" width="3" height="8" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 10.5 5.6 7.9a3.4 3.4 0 0 1 4.8 0L8 10.5Zm0-5.6a6.4 6.4 0 0 0-4.5 1.9L1.7 4.9a9 9 0 0 1 12.6 0l-1.8 1.9A6.4 6.4 0 0 0 8 4.9Z"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".6" y=".6" width="20" height="10.8" rx="3" stroke="currentColor" stroke-opacity=".5"/><rect x="2.2" y="2.2" width="16.5" height="7.6" rx="1.8" fill="currentColor"/><path d="M22.3 4.1v3.8a2 2 0 0 0 0-3.8Z" fill="currentColor" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+        <div class="homebar" id="homebar"></div>
+        <div class="finger" id="finger"></div>
+        <div class="screenwrap">
+
+<!-- WELCOME (splash) -->
+<section class="scr scr--welcome" data-id="welcome">
+  <div class="scr-body" style="padding:0">
+    <div class="ch-splash" id="splash">
+      <img class="ic" src="img/icon-a.png" alt="ClaimHunt">
+      <h2>Welcome to<br>ClaimHunt</h2>
+      <img class="laurel" src="img/laurel-a.png" alt="1 Million+ happy users">
+    </div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="scr" data-id="intro">
+  <div class="scr-top">
+    <div class="ch-nav"><span class="ch-back ghost"></span><div class="ch-segs"><i><b style="width:12%"></b></i><i></i><i></i></div><button class="ch-skip" data-go="providers">Skip</button></div>
+  </div>
+  <div class="scr-body">
+    <img class="ch-emoji" src="img/e-bag-a.png" alt="">
+    <h2 class="ch-h1">There’s money<br><span class="ch-hl">you never claimed - yet</span></h2>
+    <div class="ch-q"><p>Billions in class action settlements go unclaimed every year</p></div>
+  </div>
+  <div class="scr-foot"><button class="ch-btn" data-go="providers">Continue</button><p class="ch-prem">Already have Premium?</p></div>
+</section>
+
+<!-- PROVIDERS -->
+<section class="scr" data-id="providers">
+  <div class="scr-top">
+    <div class="ch-nav"><button class="ch-back" data-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><div class="ch-segs"><i><b style="width:100%"></b></i><i><b style="width:12%"></b></i><i></i></div><button class="ch-skip" data-go="drinks">Skip</button></div>
+    <h2 class="ch-hq">Which phone, internet, or TV <span class="ch-hl">providers</span> have you used?</h2>
+    <div class="ch-q"><p>Your providers help us find cases about fees and data privacy.</p></div>
+  </div>
+  <div class="scr-body"><div class="ch-rows" data-q="providers"></div></div>
+  <div class="scr-foot"><button class="ch-btn" data-go="drinks" data-need="providers">Continue</button></div>
+</section>
+
+<!-- DRINKS -->
+<section class="scr" data-id="drinks">
+  <div class="scr-top">
+    <div class="ch-nav"><button class="ch-back" data-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><div class="ch-segs"><i><b style="width:100%"></b></i><i><b style="width:50%"></b></i><i></i></div><button class="ch-skip" data-go="cars">Skip</button></div>
+    <h2 class="ch-hq">Which of these <span class="ch-hl">drinks</span> have you bought?</h2>
+    <div class="ch-q"><p>Your purchases help us find cases about labels and safety.</p></div>
+  </div>
+  <div class="scr-body"><div class="ch-rows" data-q="drinks"></div></div>
+  <div class="scr-foot"><button class="ch-btn" data-go="cars" data-need="drinks">Continue</button></div>
+</section>
+
+<!-- CARS -->
+<section class="scr" data-id="cars">
+  <div class="scr-top">
+    <div class="ch-nav"><button class="ch-back" data-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><div class="ch-segs"><i><b style="width:100%"></b></i><i><b style="width:70%"></b></i><i></i></div><button class="ch-skip" data-go="brands">Skip</button></div>
+    <h2 class="ch-hq">Which <span class="ch-hl">car brands</span> have you owned or leased?</h2>
+    <div class="ch-q"><p>Find cases linked to your car, from faulty parts to repair costs.</p></div>
+  </div>
+  <div class="scr-body"><div class="ch-rows" data-q="cars"></div></div>
+  <div class="scr-foot"><button class="ch-btn" data-go="brands" data-need="cars">Continue</button></div>
+</section>
+
+<!-- BRANDS -->
+<section class="scr" data-id="brands">
+  <div class="scr-top">
+    <div class="ch-nav"><button class="ch-back" data-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><div class="ch-segs"><i><b style="width:100%"></b></i><i><b style="width:100%"></b></i><i></i></div><button class="ch-skip" data-go="loader">Skip</button></div>
+    <h2 class="ch-hq">Which of these <span class="ch-hl">brands</span> have you used?</h2>
+    <div class="ch-q"><p>Find cases linked to popular brands you use. Select yours to see potential matches.</p></div>
+  </div>
+  <div class="scr-body"><div class="ch-grid" id="brandGrid"></div></div>
+  <div class="scr-foot"><button class="ch-btn" data-go="loader" data-need="brands">Continue</button></div>
+</section>
+
+<!-- LOADER -->
+<section class="scr" data-id="loader">
+  <div class="scr-body">
+    <div class="ch-load">
+      <img src="img/icon-a.png" alt="">
+      <h2>Almost everything<br>is ready</h2>
+      <div class="ch-lb"><div class="r"><span id="lb0"></span><b>0%</b></div><div class="ch-track"><i></i></div></div>
+      <div class="ch-lb"><div class="r"><span id="lb1"></span><b>0%</b></div><div class="ch-track"><i></i></div></div>
+      <div class="ch-lb"><div class="r"><span id="lb2">Checking recent and active class actions</span><b>0%</b></div><div class="ch-track"><i></i></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MATCHES (new payoff, in their system) -->
+<section class="scr" data-id="matches">
+  <div class="scr-top">
+    <div class="ch-nav"><button class="ch-back" data-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button><div class="ch-segs"><i><b style="width:100%"></b></i><i><b style="width:100%"></b></i><i><b style="width:100%"></b></i></div><span class="ch-skip" style="visibility:hidden">Skip</span></div>
+    <h2 class="ch-hq" style="margin-top:22px" id="mH"></h2>
+    <div class="ch-q"><p>We check them against recent and active class actions, and alert you when one opens.</p></div>
+  </div>
+  <div class="scr-body"><div class="ch-mlist" id="mList"></div></div>
+  <div class="scr-foot"><button class="ch-btn" data-go="paywall">Continue</button></div>
+</section>
+
+<!-- PAYWALL -->
+<section class="scr scr--pay" data-id="paywall">
+  <button class="ch-x" id="payClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <span class="ch-restore">Restore</span>
+  <div class="scr-top">
+    <img class="ch-payic" src="img/icon.png" alt="">
+    <h2 class="ch-payh">Get full access:<br><span class="ch-hl" id="payHl"></span></h2>
+  </div>
+  <div class="scr-body">
+    <div class="ch-q"><p>Most people never hear about these payouts. Never leave money on the table again</p></div>
+    <div class="ch-proof">
+      <div class="c"><div class="st">★★★★★</div><b>4.8</b><small>3.1K App Store ratings</small></div>
+      <span class="sep"></span>
+      <div class="c"><b>1 Million+</b><small>happy users</small></div>
+      <span class="sep"></span>
+      <div class="c"><b>$0</b><small>cut of your payouts</small></div>
+    </div>
+    <div class="ch-plans" id="planList">
+      <button class="ch-plan" data-v="year"><span class="ch-save">Save 90%</span><span class="t">Yearly access</span><span class="p">$49.99/year<small>$0.96 per week</small></span><span class="ch-radio"><i></i></span></button>
+      <button class="ch-plan" data-v="week"><span class="t">Weekly access</span><span class="p">$9.99<small>per week</small></span><span class="ch-radio"><i></i></span></button>
+    </div>
+    <p class="ch-rev">“I honestly had no idea how much money I was leaving on the table until I tried ClaimHunt.”<span>Puzyabra1997 · App Store review</span></p>
+  </div>
+  <div class="scr-foot">
+    <button class="ch-btn" id="payCta">Continue</button>
+    <div class="ch-legal"><a>Terms of Use</a><a>Privacy Policy</a><a>Promocode</a><span><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="#8E8E8E"/><path d="m8.5 12 2.5 2.5 4.5-5" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Cancel anytime</span></div>
+  </div>
+</section>
+
+<!-- OFFER on close -->
+<section class="scr scr--offer sheet" data-id="offer">
+  <span class="ch-restore">Restore</span>
+  <div class="scr-top">
+    <img class="ch-payic" src="img/icon.png" alt="">
+    <h2 class="ch-payh">Before you go:<br><span class="ch-hl">a lower yearly price</span></h2>
+  </div>
+  <div class="scr-body">
+    <div class="ch-ocard">
+      <span class="ch-save">Save 92%</span>
+      <div class="t">Yearly access</div>
+      <div class="big">$39.99 <small>/ year</small></div>
+      <p class="l">That is $0.77 a week, and <b>$10 less</b> than the <s>$49.99</s> yearly plan.</p>
+    </div>
+    <div class="ch-ticks" id="offTicks"></div>
+  </div>
+  <div class="scr-foot">
+    <button class="ch-btn" id="offerCta">Claim this price</button>
+    <button class="ch-nothx" id="offNo">No thanks</button>
+  </div>
+</section>
+
+<!-- ALERTS (moved after the paywall) -->
+<section class="scr" data-id="alerts">
+  <div class="scr-top">
+    <div class="ch-nav"><span class="ch-back ghost"></span><div class="ch-segs"><i><b style="width:100%"></b></i><i><b style="width:100%"></b></i><i><b style="width:100%"></b></i></div><span class="ch-skip" style="visibility:hidden">Skip</span></div>
+  </div>
+  <div class="scr-body">
+    <img class="ch-notif" src="img/notif-a.png" alt="Your claim is moving forward — Payout status just updated!">
+    <h2 class="ch-h1">We’ll monitor your claims. <span class="ch-hl">You won’t</span> miss a payout day</h2>
+    <div class="ch-q"><p id="alSub"></p></div>
+    <div class="ch-done" id="alDone"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Premium is active</span></div>
+  </div>
+  <div class="scr-foot"><button class="ch-btn2" data-go="welcome">Later</button><button class="ch-btn" data-go="welcome">Enable notifications</button></div>
+</section>
+
+        </div>
+      </div>
+    </div>
+    <div class="demo-cap hidden" id="demoCap"><div class="bar"><i id="demoProg"></i></div><p id="demoTxt"></p><button id="demoStop">Stop</button></div>
+    <div class="chips" id="chips"></div>
+    <p class="chiphint">Jump to any screen — answers already filled in.</p>
+    <div class="qr"><img src="img/qr.svg" alt="QR code for this prototype"><span><b>Open it on your phone</b>Scan to try the flow in your hand.</span></div>
+  </div>
+  <div class="panelcol"><div class="pn" id="panel"></div></div>
+</div>
+</div><!-- /view-proto -->
+
+<script>
+/* ================= options, exactly as their screens list them ================= */
+var Q = {
+  providers:{why:'Fees and data privacy', o:[['att','AT&T'],['tmobile','T-Mobile'],['xfinity','Xfinity'],['comcast','Comcast'],['spectrum','Spectrum']]},
+  drinks:   {why:'Labels and safety',     o:[['redbull','Red Bull'],['liquidiv','Liquid I.V.'],['prime','Prime Energy'],['poppi','Poppi'],['alani','Alani Nu']]},
+  cars:     {why:'Faulty parts and repair costs', o:[['honda','Honda'],['chevrolet','Chevrolet'],['bmw','BMW'],['audi','Audi'],['toyota','Toyota']]},
+  brands:   {why:'Popular brand cases',   o:[['adobe','Adobe'],['icloud','Apple iCloud storage'],['cerave','CeraVe'],['chatgpt','ChatGPT'],['colgate','Colgate'],['dominos','Domino’s']]}
+};
+var NAME={}, IMG={}, WHY={};
+Object.keys(Q).forEach(function(q){ Q[q].o.forEach(function(p){ NAME[p[0]]=p[1]; IMG[p[0]]=(q==='brands'?'img/g-':'img/l-')+p[0]+'.png'; WHY[p[0]]=Q[q].why; }); });
+var PICK_ORDER=['cars','drinks','providers','brands'];
+
+/* ================= state ================= */
+var S0={theme:'light'};
+function defaults(){ return {theme:S0.theme, providers:['att'], drinks:['poppi'], cars:['toyota'], brands:['icloud','chatgpt'], plan:'year', paid:false}; }
+var S=defaults();
+function picked(){ var a=[]; PICK_ORDER.forEach(function(q){ S[q].forEach(function(k){ a.push(k); }); }); return a; }
+function short(k){ return k==='icloud'?'iCloud':NAME[k]; }
+function headList(){ var p=picked(); if(!p.length) return 'matched to you';
+  var n=p.slice(0,2).map(short), rest=p.length-2;
+  if(rest>0) return 'for '+n.join(', ')+' and\u00a0'+rest+'\u00a0more';
+  return 'for '+n.join(' and '); }
+
+/* ================= builders ================= */
+var ck='<span class="ch-ck"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>';
+function toggle(q,k){ var i=S[q].indexOf(k); if(i>-1) S[q].splice(i,1); else S[q].push(k); syncScreen(); }
+document.querySelectorAll('.ch-rows[data-q]').forEach(function(box){ var q=box.dataset.q;
+  Q[q].o.forEach(function(p){ var b=document.createElement('button'); b.className='ch-row'; b.dataset.v=p[0];
+    b.innerHTML='<img src="'+IMG[p[0]]+'" alt=""><span class="nm">'+p[1]+'</span>'+ck;
+    b.addEventListener('click',function(){ toggle(q,p[0]); }); box.appendChild(b); }); });
+(function(){ var g=document.getElementById('brandGrid');
+  Q.brands.o.forEach(function(p){ var b=document.createElement('button'); b.className='ch-tile'; b.dataset.v=p[0];
+    b.innerHTML='<img src="'+IMG[p[0]]+'" alt="">'+ck+'<span>'+p[1].replace(' storage','<br>storage')+'</span>';
+    b.addEventListener('click',function(){ toggle('brands',p[0]); }); g.appendChild(b); }); })();
+document.getElementById('offTicks').innerHTML=['Payout alerts matched to you','Track every claim and payout','No cut of your settlement'].map(function(x){ return '<div>'+ck+'<span>'+x+'</span></div>'; }).join('');
+
+/* ================= everything downstream reads S ================= */
+function syncScreen(){
+  Object.keys(Q).forEach(function(q){
+    document.querySelectorAll('[data-q='+q+'] .ch-row'+(q==='brands'?'':'')).forEach(function(b){ b.classList.toggle('on',S[q].indexOf(b.dataset.v)>-1); });
+    document.querySelectorAll('[data-need='+q+']').forEach(function(b){ b.disabled=!S[q].length; });
+  });
+  document.querySelectorAll('#brandGrid .ch-tile').forEach(function(b){ b.classList.toggle('on',S.brands.indexOf(b.dataset.v)>-1); });
+  var p=picked(), n=p.length;
+  var prov=S.providers.map(short), rest=PICK_ORDER.filter(function(q){return q!=='providers';}).reduce(function(a,q){ return a.concat(S[q]); },[]).map(short);
+  document.getElementById('lb0').textContent = prov.length ? 'Checking '+prov[0]+(prov.length>1?' and '+(prov.length-1)+' more':'')+' for fee cases' : 'Analyzing your purchases';
+  document.getElementById('lb1').textContent = rest.length ? 'Matching '+rest.slice(0,2).join(', ')+(rest.length>2?' and '+(rest.length-2)+' more':'')+' with settlements' : 'Matching your purchases and settlements';
+  document.getElementById('mH').innerHTML = n ? '<span class="ch-hl">'+n+(n===1?' brand':' brands')+'</span> of yours, ready to check' : 'Your brands, <span class="ch-hl">ready to check</span>';
+  var ml=document.getElementById('mList');
+  ml.innerHTML = p.slice(0,5).map(function(k){ return '<div class="ch-m"><img src="'+IMG[k]+'" alt=""><div><b>'+short(k)+'</b><span>'+WHY[k]+'</span></div><span class="ch-lockp"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Premium</span></div>'; }).join('')
+    + (n>5?'<p class="ch-more">and '+(n-5)+' more</p>':'') + (n?'':'<p class="ch-more">Pick a few brands and we will watch them for you.</p>');
+  document.getElementById('payHl').textContent='get payout alerts '+headList();
+  document.querySelectorAll('#planList .ch-plan').forEach(function(b){ b.classList.toggle('on',b.dataset.v===S.plan); });
+  document.getElementById('alSub').textContent = n ? 'Turn on notifications and we will tell you the day a case opens for '+short(p[0])+(n>1?' or any of your '+(n-1)+' other brands':'')+'.' : 'Enable notifications to stay updated on claim progress and payout alerts';
+  document.getElementById('alDone').classList.toggle('hidden',!S.paid);
+}
+
+/* ================= router ================= */
+var ORDER=['welcome','intro','providers','drinks','cars','brands','loader','matches','paywall','offer','alerts'];
+var LABEL={welcome:'Splash',intro:'Intro',providers:'Providers',drinks:'Drinks',cars:'Cars',brands:'Brands',loader:'Loader',matches:'Your brands',paywall:'Paywall',offer:'Offer on close',alerts:'Alerts'};
+var scr={}, hist=[], cur='welcome', loadTimers=[], splashT=null;
+document.querySelectorAll('.scr').forEach(function(s){ scr[s.dataset.id]=s; });
+function protoOn(){ return document.getElementById('view-proto').classList.contains('on'); }
+function chrome(){ var dark=S.theme==='dark'; document.getElementById('sbar').classList.toggle('light',dark); document.getElementById('homebar').classList.toggle('light',dark); }
+function enter(id){ chrome(); paintChips(); paintPanel(); clearLoad(); clearTimeout(splashT);
+  if(id==='loader') runLoader();
+  if(id==='welcome' && !demo.on) armSplash(); }
+function armSplash(){ clearTimeout(splashT); splashT=setTimeout(function(){ if(cur==='welcome' && protoOn() && !demo.on) go('intro'); },2200); }
+function go(id,opts){
+  opts=opts||{}; if(id===cur) return;
+  var from=scr[cur], to=scr[id];
+  if(!opts.back) hist.push(cur);
+  if(from){ from.classList.remove('is-active');
+    if(!to.classList.contains('sheet') && !from.classList.contains('sheet')) from.classList.add('is-past'); }
+  Object.keys(scr).forEach(function(k){ if(k!==id&&k!==cur) scr[k].classList.remove('is-active'); });
+  if(id==='welcome'){ Object.keys(scr).forEach(function(k){ scr[k].classList.remove('is-past'); }); hist=[]; S.paid=false; syncScreen(); }
+  to.classList.remove('is-past'); to.classList.add('is-active');
+  cur=id; enter(id);
+}
+function back(){
+  if(!hist.length) return;
+  var prev=hist.pop();
+  scr[cur].classList.remove('is-active');
+  scr[prev].classList.remove('is-past'); scr[prev].classList.add('is-active');
+  cur=prev; enter(prev);
+}
+function jump(id){
+  var i=ORDER.indexOf(id);
+  Object.keys(scr).forEach(function(k){ scr[k].classList.add('nofx'); scr[k].classList.remove('is-active','is-past'); });
+  hist=ORDER.slice(0,i<0?0:i);
+  if(id==='offer') scr.paywall.classList.add('is-active');
+  S.paid = (id==='alerts');
+  scr[id].classList.add('is-active'); cur=id;
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    Object.keys(scr).forEach(function(k){ scr[k].classList.remove('nofx'); }); }); });
+  syncScreen(); enter(id);
+}
+var chipsBuilt=false;
+function paintChips(){
+  var c=document.getElementById('chips');
+  if(!chipsBuilt){ chipsBuilt=true;
+    ORDER.forEach(function(id){ var b=document.createElement('button'); b.className='chip'+(id==='offer'?' offer':''); b.textContent=LABEL[id];
+      b.dataset.id=id; b.onclick=function(){ stopDemo(); jump(id); }; c.appendChild(b); }); }
+  c.querySelectorAll('.chip').forEach(function(b){ b.classList.toggle('on', b.dataset.id===cur); });
+}
+function clearLoad(){ loadTimers.forEach(clearTimeout); loadTimers=[]; }
+function runLoader(){
+  var k=demo.on?0.48:1, bars=[].slice.call(document.querySelectorAll('.ch-lb'));
+  bars.forEach(function(b){ b.classList.remove('on'); b.querySelector('i').style.width='0%'; b.querySelector('b').textContent='0%'; });
+  bars.forEach(function(b,i){
+    var start=(250+i*1300)*k, dur=1250*k;
+    loadTimers.push(setTimeout(function(){ b.classList.add('on'); },start));
+    for(var s=1;s<=20;s++)(function(s){ loadTimers.push(setTimeout(function(){ var v=s*5; b.querySelector('i').style.width=v+'%'; b.querySelector('b').textContent=v+'%'; },start+dur*s/20)); })(s);
+  });
+  loadTimers.push(setTimeout(function(){ if(cur==='loader') go('matches'); },4300*k));
+}
+
+/* ================= wiring ================= */
+document.querySelectorAll('[data-go]').forEach(function(b){ b.addEventListener('click',function(){ if(!b.disabled) go(b.dataset.go); }); });
+document.querySelectorAll('[data-back]').forEach(function(b){ b.addEventListener('click',back); });
+document.getElementById('splash').addEventListener('click',function(){ go('intro'); });
+document.querySelectorAll('#planList .ch-plan').forEach(function(b){ b.addEventListener('click',function(){ S.plan=b.dataset.v; syncScreen(); }); });
+document.getElementById('payClose').addEventListener('click',function(){ go('offer'); });
+document.getElementById('payCta').addEventListener('click',function(){ S.paid=true; syncScreen(); go('alerts'); });
+document.getElementById('offerCta').addEventListener('click',function(){ S.paid=true; syncScreen(); go('alerts'); });
+document.getElementById('offNo').addEventListener('click',function(){ S.paid=false; syncScreen(); go('alerts'); });
+function setSeg(id,attr,val){ document.querySelectorAll('#'+id+' button').forEach(function(b){ b.classList.toggle('on', b.dataset[attr]===val); }); }
+function setTheme(th){ S.theme=th; S0.theme=th; document.getElementById('phoneIn').classList.toggle('dark',th==='dark'); setSeg('segTheme','theme',th); chrome(); }
+document.querySelectorAll('#segTheme button').forEach(function(b){ b.addEventListener('click',function(){ setTheme(b.dataset.theme); }); });
+
+/* ================= the 30-second walkthrough ================= */
+var demo={tok:0,on:false,t0:0,iv:null}, finger=document.getElementById('finger'), phoneIn=document.getElementById('phoneIn');
+function W(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+function cap(txt){ document.getElementById('demoTxt').textContent=txt; }
+async function tap(sel,tok){
+  if(demo.tok!==tok) throw 0;
+  var el=document.querySelector(sel); if(!el) return;
+  var r=el.getBoundingClientRect(), p=phoneIn.getBoundingClientRect(), z=p.width/phoneIn.offsetWidth||1;
+  finger.style.left=((r.left-p.left+r.width/2)/z)+'px'; finger.style.top=((r.top-p.top+r.height/2)/z)+'px';
+  finger.classList.add('show'); await W(380); if(demo.tok!==tok) throw 0;
+  finger.classList.add('press'); await W(120); finger.classList.remove('press'); el.click(); await W(160);
+  if(demo.tok!==tok) throw 0;
+}
+async function pause(ms,tok){ await W(ms); if(demo.tok!==tok) throw 0; }
+function startDemo(){
+  stopDemo(); var tok=++demo.tok; demo.on=true; demo.t0=Date.now();
+  S=defaults(); S.providers=[]; S.drinks=[]; S.cars=[]; S.brands=[]; setTheme(S0.theme); jump('welcome');
+  document.getElementById('demoCap').classList.remove('hidden');
+  demo.iv=setInterval(function(){ document.getElementById('demoProg').style.width=Math.min(100,(Date.now()-demo.t0)/290)+'%'; },200);
+  (async function(){
+    try{
+      cap('A new install opens on your splash — no tracking prompt yet.'); await pause(1300,tok);
+      await tap('#splash',tok); await pause(500,tok);
+      cap('Your story screen, now without a system dialog on top of it.'); await pause(900,tok);
+      await tap('[data-id=intro] .ch-btn',tok);
+      cap('Your questions, unchanged. They pick a provider…'); await pause(450,tok);
+      await tap('[data-q=providers] [data-v=tmobile]',tok); await tap('[data-id=providers] .ch-btn',tok);
+      cap('…a drink…'); await pause(300,tok);
+      await tap('[data-q=drinks] [data-v=poppi]',tok); await tap('[data-id=drinks] .ch-btn',tok);
+      cap('…a car…'); await pause(300,tok);
+      await tap('[data-q=cars] [data-v=toyota]',tok); await tap('[data-id=cars] .ch-btn',tok);
+      cap('…and the brands they use.'); await pause(300,tok);
+      await tap('#brandGrid [data-v=chatgpt]',tok); await tap('#brandGrid [data-v=adobe]',tok); await tap('[data-id=brands] .ch-btn',tok);
+      cap('The loader names their answers while it works.'); await pause(2300,tok);
+      cap('Before any price: the brands they picked, ready to check.'); await pause(2200,tok);
+      await tap('[data-id=matches] .ch-btn',tok);
+      cap('The paywall headline names their brands. Your 4.8 and a real review sit above the plans.'); await pause(2300,tok);
+      await tap('#planList [data-v=week]',tok); await pause(500,tok); await tap('#planList [data-v=year]',tok); await pause(300,tok);
+      cap('Now there is a close button. It opens one offer: your own $39.99 yearly plan.'); await tap('#payClose',tok); await pause(2300,tok);
+      cap('That is the flow. Tracking and alerts come after this screen, once they have something to be alerted about.');
+      finger.classList.remove('show'); await pause(2400,tok); stopDemo();
+    }catch(e){}
+  })();
+}
+function stopDemo(){ if(!demo.on) return; demo.tok++; demo.on=false; clearInterval(demo.iv); finger.classList.remove('show','press');
+  document.getElementById('demoCap').classList.add('hidden'); }
+document.getElementById('demoBtn').addEventListener('click',startDemo);
+document.getElementById('demoStop').addEventListener('click',stopDemo);
+phoneIn.addEventListener('pointerdown',function(e){ if(e.isTrusted && demo.on) stopDemo(); });
+</script>
+<script>
+/* ---- the short panel: hypothesis + potential outcome, nothing else ---- */
+var Q1='Show their brands before the price', Q1o='CR +10–20%';
+var PANEL = {
+welcome:{ctx:true,t:'Welcome to ClaimHunt',
+ kept:'Your splash untouched — the coin-and-gavel icon, “Welcome to ClaimHunt” and the “1 Million+ happy users” laurel. The one change: no tracking prompt follows it. That is idea 04.'},
+intro:{n:4,t:'Ask for tracking and alerts after the paywall',
+ hyp:'Try showing this screen with nothing on top of it, <b>because today the “Allow ClaimHunt to track your activity” dialog covers your opening line before anyone has read it</b>. Tracking moves to after purchase.',
+ kept:'Your money-bag emoji, your highlighter with the orange handles, the grey quote bar and your green Continue. Your other three story screens stay as they are; one is shown here.',
+ out:'CR +10–15%'},
+providers:{n:1,t:Q1,
+ hyp:'Try keeping every question exactly as it is, <b>because the answers are what make the next three screens personal</b>. What they tap here is read back on the loader, the brands screen and the paywall headline.',
+ kept:'Your logo rows, the green border and check on selection, the disabled Continue until something is picked, Skip and the three-part progress bar.',
+ out:Q1o},
+drinks:{n:1,t:Q1,
+ hyp:'Try keeping this question as it is, <b>because a pick here becomes a named row on the brands screen</b> with your own reason next to it: labels and safety.',
+ kept:'Your logo rows and selection state. Online services and stores stay in the flow unchanged; they are left out of the prototype only to keep it short.',
+ out:Q1o},
+cars:{n:1,t:Q1,
+ hyp:'Try keeping this question as it is, <b>because the car they own is the most personal answer in the flow</b>, and it leads the paywall headline.',
+ kept:'Your logo rows, green check and highlighter headline.',
+ out:Q1o},
+brands:{n:1,t:Q1,
+ hyp:'Try keeping your brand grid as it is, <b>because it is the last thing they do before the loader, and they should see it used straight away</b>.',
+ kept:'Your app-icon tiles and labels, three across.',
+ out:Q1o},
+loader:{n:1,t:Q1,
+ hyp:'Try naming their answers on your loader bars, <b>because “Analyzing your purchases” reads the same for everyone and promises a match the next screen never shows</b>. Go back, pick other brands, and these lines change.',
+ kept:'Your icon, “Almost everything is ready”, the three bars with their percentages and your third line word for word.',
+ out:Q1o},
+matches:{n:1,t:Q1,
+ hyp:'Try one screen between the loader and the paywall that lists the brands they picked, <b>because the loader says “Matching your purchases and settlements” and then the paywall names none of them</b>. Payout and deadline stay behind Premium, so nothing is given away and no amount is promised.',
+ kept:'Built from your own parts: the logo rows, the highlighter headline, the quote bar and your reasons (“fees and data privacy”, “labels and safety”) from your question screens.',
+ out:Q1o},
+paywall:{n:2,t:'Name their brands in the paywall headline',
+ hyp:'Try finishing your typed headline with their brands, <b>because “get payout alerts matched to you” is generic, and the flow already knows they drive a Toyota and drink Poppi</b>. Change an answer earlier and this line changes.',
+ out:'CR +15–20%',
+ n2:5, t2:'Put your 4.8 and your reviews on the paywall',
+ hyp2:'Try your rating, your user count, “no cut of your payout” and one real review right above the plans, <b>because your 4.8 from 3.1K ratings appears nowhere in the flow</b>. The yearly card also states its $49.99 total, so “$0.96 per week” never reads as the whole price.',
+ out2:'CR +10–15%',
+ kept:'Your Restore pill, icon, “Get full access:” headline with the highlighter, the quote bar, both plan cards, the Save 90% badge, the green Continue and the legal row with Cancel anytime. New: a small close button, top left.'},
+offer:{n:3,t:'Give the paywall a way out, and one offer behind it',
+ hyp:'Try a close button that opens one second chance on your $39.99 Annual Premium, <b>because today the paywall has no exit, and that price is already a live product in your store</b>. No timer and no invented discount: $10 less than $49.99, and that is all it claims.',
+ kept:'Built from your paywall: the icon, the highlighter headline, your mint plan card with the gold badge and your green button.',
+ out:'ARPU +10–15%'},
+alerts:{n:4,t:'Ask for tracking and alerts after the paywall',
+ hyp:'Try your notification screen straight after purchase, with tracking and “How did you hear about us?” next to it, <b>because before the paywall these are three asks for nothing; after it, “You won’t miss a payout day” is a promise they just paid for</b>.',
+ kept:'Your notification primer as it ships — the stacked alerts, the headline with the highlighter, Later and Enable notifications. The line under it now names their first brand.',
+ out:'CR +10–15%'}
+};
+function outBlock(lab,val){ return '<div class="pn-out"><div class="lab">'+lab+'</div><div class="v">'+val+'</div></div>'; }
+function paintPanel(){
+  var d=PANEL[cur]; if(!d) return; var h='';
+  if(d.ctx){
+    h+='<div class="pn-n ctx">Context · no change proposed</div><h3 class="pn-t">'+d.t+'</h3><div class="pn-kept">'+d.kept+'</div>';
+  } else {
+    h+='<div class="pn-n">Idea '+d.n+' of 5</div><h3 class="pn-t">'+d.t+'</h3><p class="pn-hyp">'+d.hyp+'</p>'+outBlock('Potential outcome · based on Adapty data',d.out);
+    if(d.hyp2){ h+='<div class="pn-sep"></div><div class="pn-n">Idea '+d.n2+' of 5</div><h3 class="pn-t" style="font-size:19px">'+d.t2+'</h3><p class="pn-hyp" style="margin-top:12px">'+d.hyp2+'</p>'+outBlock('Potential outcome · based on Adapty data',d.out2); }
+    h+='<div class="pn-kept"><b>Your design, unchanged.</b> '+d.kept+'</div>';
+  }
+  h+='<div class="pn-foot">Ranges are Adapty’s expected effect from tests across 30,000+ subscription apps — not measured lift for ClaimHunt. Prices, rating and review come from your US App Store listing.</div>';
+  document.getElementById('panel').innerHTML=h;
+}
+
+/* ---- views, jumps from the overview ---- */
+function showView(v){
+  if(v!=='proto') stopDemo();
+  document.querySelectorAll('.view').forEach(function(x){ x.classList.remove('on'); });
+  document.getElementById('view-'+v).classList.add('on');
+  document.querySelectorAll('.nav-links button[data-view]').forEach(function(b){ b.classList.toggle('on', b.dataset.view===v); });
+  window.scrollTo(0,0);
+  if(v==='proto' && cur==='welcome') armSplash();
+}
+document.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ showView(b.dataset.view); }); });
+document.querySelectorAll('.idea[data-jump]').forEach(function(b){ b.addEventListener('click',function(){ showView('proto'); jump(b.dataset.jump); }); });
+document.querySelectorAll('[data-demo]').forEach(function(b){ b.addEventListener('click',function(){ showView('proto'); startDemo(); }); });
+
+scr.welcome.classList.add('is-active');
+syncScreen(); chrome(); paintChips(); paintPanel();
+if(/[?&]open=proto/.test(location.search)) showView('proto');
+</script>
+</body>
+</html>
